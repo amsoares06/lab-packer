@@ -1,0 +1,71 @@
+{
+    "variables": {
+        "version" : "0.0.1",
+        "template_name": "packer-centos7",
+        "username": "",
+        "password": "",
+        "esxi_host": "",
+        "esxi_username": "",
+        "esxi_password": "",
+        "esxi_datastore": "datastore1",
+        "iso_url": "http://ftp.tudelft.nl/centos.org/7.8.2003/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso",
+        "iso_checksum": "sha256:659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193"
+      },
+
+    "builders": [
+      {
+        "type": "vmware-iso",
+        "vm_name": "{{user `template_name`}}-{{user `version`}}",
+        "vmdk_name": "{{user `template_name`}}-{{user `version`}}",
+        "communicator": "ssh",
+        "ssh_pty": "true",
+        "headless": false,
+        "cpus": 1,
+        "cores": 1,
+        "memory": 2048,
+        "disk_size": 20480,
+        "disk_type_id": "thin",
+        "guest_os_type": "centos7-64",
+        "version": "14",
+        "iso_url": "{{user `iso_url`}}",
+        "iso_checksum": "{{user `iso_checksum`}}",
+        "shutdown_command": "sudo -S /usr/sbin/shutdown -h now",
+        "remote_host": "{{user `esxi_host`}}",
+        "remote_datastore": "{{user `esxi_datastore`}}",
+        "remote_cache_datastore": "datastore2",
+        "remote_cache_directory": "iso/packer_cache",
+        "cleanup_remote_cache": false,
+        "remote_username": "{{user `esxi_username`}}",
+        "remote_password": "{{user `esxi_password`}}",
+        "remote_type": "esx5",
+        "format": "ova",
+        "ssh_username": "{{user `username`}}",
+        "ssh_password": "{{user `password`}}",
+        "ssh_wait_timeout": "60m",
+        "tools_upload_flavor": "linux",
+        "vnc_disable_password": true,
+        "keep_registered": true,
+        "http_directory": ".",
+        "boot_wait": "20s",
+        "vmx_data": {
+          "ethernet0.networkName": "VM Network",
+          "ethernet0.present": "TRUE",
+          "ethernet0.startConnected": "TRUE",
+          "ethernet0.virtualDev": "vmxnet3"
+        },
+        "vmx_data_post": {
+          "ide1:0.startConnected": "FALSE",
+          "ide1:0.clientDevice": "TRUE",
+          "ide1:0.fileName": "emptyBackingString",
+          "ethernet0.virtualDev": "vmxnet3"
+        },
+        "floppy_files": [
+          "kickstart/centos7-ks.cfg"
+        ],
+        "boot_command": [
+          "<tab> inst.text inst.ks=hd:fd0:/centos7-ks.cfg <enter><wait>"
+        ]
+      }
+    ]
+
+  }
