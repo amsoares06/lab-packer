@@ -4,3 +4,4 @@ packer_cache/
 **/packer.log
 output-*/
 **/*-vars.json
+vars/

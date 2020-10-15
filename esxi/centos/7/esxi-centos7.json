@@ -1,6 +1,6 @@
 {
     "variables": {
-        "version" : "0.0.1",
+        "version" : "1.0.0",
         "template_name": "packer-centos7",
         "username": "",
         "password": "",
@@ -34,7 +34,7 @@
         "remote_datastore": "{{user `esxi_datastore`}}",
         "remote_cache_datastore": "datastore2",
         "remote_cache_directory": "iso/packer_cache",
-        "cleanup_remote_cache": false,
+        "cleanup_remote_cache": true,
         "remote_username": "{{user `esxi_username`}}",
         "remote_password": "{{user `esxi_password`}}",
         "remote_type": "esx5",
@@ -44,7 +44,7 @@
         "ssh_wait_timeout": "60m",
         "tools_upload_flavor": "linux",
         "vnc_disable_password": true,
-        "keep_registered": true,
+        "keep_registered": false,
         "http_directory": ".",
         "boot_wait": "20s",
         "vmx_data": {
@@ -60,12 +60,33 @@
           "ethernet0.virtualDev": "vmxnet3"
         },
         "floppy_files": [
-          "kickstart/centos7-ks.cfg"
+          "esxi/centos/7/kickstart/centos7-ks.cfg"
         ],
         "boot_command": [
           "<tab> inst.text inst.ks=hd:fd0:/centos7-ks.cfg <enter><wait>"
         ]
       }
-    ]
+    ],
 
-  }
+    "provisioners": [
+      {
+        "type": "file",
+        "source": "files/authorized_keys",
+        "destination": "/home/packer/.ssh/authorized_keys"
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "chmod 600 /home/packer/.ssh/authorized_keys"
+        ]
+      },
+      {
+        "type": "shell",
+        "execute_command": "sudo -E sh -x '{{.Path}}'",
+        "scripts": [
+          "scripts/install-puppet-agent.sh",
+          "scripts/update-system.sh"
+        ]
+      }
+    ]
+}
