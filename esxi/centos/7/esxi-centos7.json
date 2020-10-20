@@ -60,7 +60,7 @@
           "ethernet0.virtualDev": "vmxnet3"
         },
         "floppy_files": [
-          "esxi/centos/7/kickstart/centos7-ks.cfg"
+          "files/linux/centos/7/kickstart/centos7-ks.cfg"
         ],
         "boot_command": [
           "<tab> inst.text inst.ks=hd:fd0:/centos7-ks.cfg <enter><wait>"
@@ -71,7 +71,7 @@
     "provisioners": [
       {
         "type": "file",
-        "source": "files/authorized_keys",
+        "source": "files/linux/authorized_keys",
         "destination": "/home/packer/.ssh/authorized_keys"
       },
       {
@@ -84,8 +84,8 @@
         "type": "shell",
         "execute_command": "sudo -E sh -x '{{.Path}}'",
         "scripts": [
-          "scripts/install-puppet-agent.sh",
-          "scripts/update-system.sh"
+          "scripts/linux/install-puppet-agent.sh",
+          "scripts/linux/update-system.sh"
         ]
       }
     ]
