@@ -1,6 +1,6 @@
 {
     "variables": {
-        "version" : "1.0.1",
+        "version" : "1.0.2",
         "template_name": "packer-centos7",
         "username": "packer",
         "password": "packer",
