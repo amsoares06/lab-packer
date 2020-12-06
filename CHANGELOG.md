@@ -2,6 +2,12 @@
 - TO DO:
   - add vcenter/centos/8 template
 
+## Release 1.0.3
+- vcenter/centos/7
+  - updated image url
+  - removed some sensitive data from template
+  - fixed identation
+
 ## Release 1.0.2
 - vcenter/centos/7:
   - changed packer userid
