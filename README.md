@@ -29,11 +29,10 @@ Create a json file with credentials. For AWS this is optional, you can skip if y
 #### vCenter (vars/vcenter-vars.json):
 ```json
 {
-    "username": "packer",
-    "password": "packer",
-    "vcenter_server": "<VCENTER IP>",
-    "vcenter_username": "<VCENTER USER>",
-    "vcenter_password": "<VCENTER PASSWORD>"
+    "vcenter_server": "<VCENTER_ADDRESS>",
+    "vcenter_username": "<VCENTER_USER>",
+    "vcenter_password": "<VCENTER_PASSWORD>",
+    "vcenter_datastore": "<DATASTORE>"
 }
 ```
 
@@ -42,6 +41,21 @@ Create a json file with credentials. For AWS this is optional, you can skip if y
 Run packer from the base folder of this repository.
 
 ```
+packer validate -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
+packer build -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
+```
+
+Alternatively you can set a paramter as a environment variable:
+```json
+{
+    (...)
+    "vcenter_password": "{{ env `PACKER_VSPHERE_PASSWORD` }}",
+    (...)
+}
+```
+Export vSphere password and call Packer:
+```
+export PACKER_VSPHERE_PASSWORD="<PASSWORD>"
 packer validate -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
 packer build -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
 ```
