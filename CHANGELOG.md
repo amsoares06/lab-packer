@@ -2,6 +2,10 @@
 - TO DO:
   - add vcenter/centos/8 template
 
+## Release 1.0.4
+- vcenter/centos/8
+  - fixed DNS IP
+
 ## Release 1.0.3
 - vcenter/centos/7
   - updated image url
