@@ -1,10 +1,11 @@
-## Future Release
-- TO DO:
-  - add vcenter/centos/8 template
-
 ## Release 1.0.4
-- vcenter/centos/8
+- vcenter/centos/7
   - fixed DNS IP
+  - fixed checksum on iso
+  - changed kickstart location
+  - removed install-puppet-agent.sh script
+- vcenter/centos/8
+  - initial release
 
 ## Release 1.0.3
 - vcenter/centos/7
