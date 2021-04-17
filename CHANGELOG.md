@@ -1,6 +1,8 @@
 ## Release 1.0.5
 - vcenter/centos/7
   - resized disk
+- vcenter/ubuntu/20.04
+  - initial release
 
 ## Release 1.0.4
 - vcenter/centos/7
