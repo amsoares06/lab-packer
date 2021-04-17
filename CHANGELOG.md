@@ -1,3 +1,7 @@
+## Release 1.0.5
+- vcenter/centos/7
+  - resized disk
+
 ## Release 1.0.4
 - vcenter/centos/7
   - fixed DNS IP

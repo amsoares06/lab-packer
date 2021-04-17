@@ -1,6 +1,6 @@
 {
     "variables": {
-        "version" : "1.0.4",
+        "version" : "1.0.5",
         "template_name": "packer-centos7",
         "username": "packer",
         "password": "packer",
@@ -40,7 +40,7 @@
         "guest_os_type": "centos7_64Guest",
         "storage": [
           {
-            "disk_size": 20480,
+            "disk_size": 40960,
             "disk_thin_provisioned": true
           }
         ],
