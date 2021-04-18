@@ -22,4 +22,5 @@ elif cat /etc/os-release | grep -w ID | grep ubuntu; then
 
 else
     echo "[ERROR] OS not supported..."
+    exit 1
 fi
