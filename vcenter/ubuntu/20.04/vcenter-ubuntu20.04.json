@@ -63,9 +63,30 @@
     ],
 
     "provisioners": [
-        {
-          "type": "shell",
-          "inline": ["ls /"]
-        }
+      {
+        "type": "shell",
+        "inline": [
+          "mkdir /home/packer/.ssh",
+          "chmod 700 /home/packer/.ssh"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "files/linux/authorized_keys",
+        "destination": "/home/packer/.ssh/authorized_keys"
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "chmod 600 /home/packer/.ssh/authorized_keys"
+        ]
+      },
+      {
+        "type": "shell",
+        "execute_command": "sudo -E sh -x '{{.Path}}'",
+        "scripts": [
+          "scripts/linux/update-system.sh"
+        ]
+      }
     ]
 }
