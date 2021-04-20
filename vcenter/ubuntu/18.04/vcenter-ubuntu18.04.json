@@ -1,0 +1,106 @@
+{
+    "variables": {
+        "template_name": "packer-ubuntu18.04",
+        "username": "packer",
+        "password": "packer",
+        "vcenter_server": "",
+        "vcenter_username": "",
+        "vcenter_password": "",
+        "vcenter_insecure_connection": "",
+        "vcenter_datacenter": "",
+        "vcenter_cluster": "",
+        "vcenter_datastore": "",
+        "iso_url": "http://old-releases.ubuntu.com/releases/bionic/ubuntu-18.04.4-server-amd64.iso",
+        "iso_checksum": "sha256:a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc"
+    },
+
+    "builders": [
+        {
+            "type": "vsphere-iso",
+            "name": "{{ user `template_name` }}",
+
+            "vcenter_server": "{{ user `vcenter_server` }}",
+            "username": "{{ user `vcenter_username` }}",
+            "password": "{{ user `vcenter_password` }}",
+            "insecure_connection": "{{ user `vcenter_insecure_connection` }}",
+            "datacenter": "{{ user `vcenter_datacenter` }}",
+            "cluster": "{{ user `vcenter_cluster` }}",
+            "datastore": "{{ user `vcenter_datastore` }}",
+
+            "vm_name": "{{ user `template_name` }}",
+            "cpus": 1,
+            "cpu_cores": 1,
+            "ram": 1024,
+            "storage": [
+                {
+                    "disk_size": 40960,
+                    "disk_thin_provisioned": true
+                }
+            ],
+            "network_adapters": [
+                {
+                    "network": "VM Network",
+                    "network_card": "vmxnet3"
+                }
+            ],
+            "vm_version": "14",
+            "guest_os_type": "ubuntu64Guest",
+
+            "iso_url": "{{ user `iso_url` }}",
+            "iso_checksum": "{{ user `iso_checksum` }}",
+
+
+            "floppy_files": [
+                "./vcenter/ubuntu/18.04/preseed/preseed.cfg"
+            ],
+            "boot_command": [
+                "<enter><wait><f6><wait><esc><wait>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs>",
+                "/install/vmlinuz",
+                " initrd=/install/initrd.gz",
+                " priority=critical",
+                " locale=en_US",
+                " file=/media/preseed.cfg",
+                "<enter>"
+            ],
+
+            "ssh_username": "{{ user `username` }}",
+            "ssh_password": "{{ user `password` }}",
+
+            "convert_to_template": true,
+            "folder": "templates"
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "files/linux/authorized_keys",
+            "destination": "/home/packer/.ssh/authorized_keys"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "chmod 600 /home/packer/.ssh/authorized_keys"
+            ]
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo '{{ user `password` }}' | sudo -S env {{ .Vars }} {{ .Path }}",
+            "environment_vars": [
+                "DEBIAN_FRONTEND=noninteractive"
+                ],
+            "scripts": [
+                "scripts/linux/update-system.sh"
+            ]
+        }
+    ]
+}

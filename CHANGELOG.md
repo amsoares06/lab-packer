@@ -1,3 +1,8 @@
+## 04/20/21
+- got rid of version numbers, they don´t make sense atm
+- vcenter/ubuntu/18.04
+  - added template
+
 ## Release 1.0.5
 - vcenter/centos/7
   - resized disk

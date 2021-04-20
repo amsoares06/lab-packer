@@ -15,10 +15,10 @@ elif cat /etc/os-release | grep -w ID | grep ubuntu; then
     OS="ubuntu"
     echo "[INFO] Ubuntu detected..."
     # Update all
-    apt update
-    apt upgrade -y
+    apt-get update
+    apt-get upgrade -y
     # Install software
-    apt install net-tools
+    apt-get install net-tools
 
 else
     echo "[ERROR] OS not supported..."
