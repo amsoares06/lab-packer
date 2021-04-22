@@ -5,7 +5,7 @@ Creates a packer image to deploy on AWS or ESXi.
 Git clone this repository, all paths are relative to the base directory of this repository.
 
 ## How to setup
-Create a json file with credentials. For AWS this is optional, you can skip if you have AWS CLI configured.
+Create a json file with credentials. For AWS this is optional, you can skip this if you have AWS CLI configured.
 
 #### AWS (vars/aws-vars.json):
 ```json
@@ -32,6 +32,9 @@ Create a json file with credentials. For AWS this is optional, you can skip if y
     "vcenter_server": "<VCENTER_ADDRESS>",
     "vcenter_username": "<VCENTER_USER>",
     "vcenter_password": "<VCENTER_PASSWORD>",
+    "vcenter_insecure_connection": "<false|true>",
+    "vcenter_datacenter": "<DATACENTER>",
+    "vcenter_cluster": "<CLUSTER>",
     "vcenter_datastore": "<DATASTORE>"
 }
 ```
@@ -45,7 +48,7 @@ packer validate -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos
 packer build -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
 ```
 
-Alternatively you can set a paramter as a environment variable:
+Alternatively you can set a parameter as a environment variable:
 ```json
 {
     (...)
