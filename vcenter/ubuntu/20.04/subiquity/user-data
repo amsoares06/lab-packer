@@ -90,10 +90,12 @@ autoinstall:
         type: mount
         device: format-swap
         path: ''
+  # TO DO: change packer uid to 9999
   identity:
     hostname: packer-ubuntu
     username: packer
     password: $6$FhcddHFVZ7ABA4Gi$QybBjJXeTESb.NIDf7umP5rubBXM0N.SseGarXYz1kZpit8UgV6CVWo7ubIoacgdBEPUXTWXe92GyAVJ.jOJZ.
+    realname: 'packer account'
   ssh:
     install-server: yes
     allow-pw: yes

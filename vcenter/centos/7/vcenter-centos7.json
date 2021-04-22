@@ -1,83 +1,87 @@
 {
     "variables": {
-        "version" : "1.0.5",
         "template_name": "packer-centos7",
         "username": "packer",
         "password": "packer",
         "vcenter_server": "",
         "vcenter_username": "",
-        "vcenter_password": "{{ env `PACKER_VSPHERE_PASSWORD` }}",
+        "vcenter_password": "",
+        "vcenter_insecure_connection": "",
+        "vcenter_datacenter": "",
+        "vcenter_cluster": "",
         "vcenter_datastore": "",
         "iso_url": "http://mirror.ehv.weppel.nl/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso",
         "iso_checksum": "sha256:07b94e6b1a0b0260b94c83d6bb76b26bf7a310dc78d7a9c7432809fb9bc6194a"
-      },
+    },
 
     "builders": [
-      {
-        "type": "vsphere-iso",
-        "vcenter_server": "{{ user `vcenter_server` }}",
-        "username": "{{ user `vcenter_username` }}",
-        "password": "{{ user `vcenter_password` }}",
-        "insecure_connection": true,
-        "datacenter": "dc-home",
-        "floppy_files": [
-          "vcenter/centos/7/kickstart/kickstart.cfg"
-        ],
-        "boot_wait": "20s",
-        "boot_command": [
-          "<tab> inst.text inst.ks=hd:fd0:/kickstart.cfg <enter><wait>"
-        ],
-        "cpus": 1,
-        "cpu_cores": 1,
-        "ram": 2048,
-        "vm_name": "{{ user `template_name` }}-{{ user `version` }}",
-        "cluster": "cluster-home",
-        "datastore": "{{ user `vcenter_datastore` }}",
-        "shutdown_command": "sudo -S /usr/sbin/shutdown -h now",
-        "iso_url": "{{ user `iso_url` }}",
-        "iso_checksum": "{{ user `iso_checksum` }}",
-        "vm_version": "14",
-        "guest_os_type": "centos7_64Guest",
-        "storage": [
-          {
-            "disk_size": 40960,
-            "disk_thin_provisioned": true
-          }
-        ],
-        "network_adapters": [
-          {
-            "network": "VM Network",
-            "network_card": "vmxnet3"
-          }
-        ],
-        "communicator": "ssh",
-        "ssh_pty": true,
-        "ssh_username": "{{ user `username` }}",
-        "ssh_password": "{{ user `password` }}",
-        "ssh_wait_timeout": "60m",
-        "convert_to_template": true,
-        "folder": "templates"
-      }
+        {
+            "type": "vsphere-iso",
+            "name": "{{ user `template_name` }}",
+
+            "vcenter_server": "{{ user `vcenter_server` }}",
+            "username": "{{ user `vcenter_username` }}",
+            "password": "{{ user `vcenter_password` }}",
+            "insecure_connection": "{{ user `vcenter_insecure_connection` }}",
+            "datacenter": "{{ user `vcenter_datacenter` }}",
+            "cluster": "{{ user `vcenter_cluster` }}",
+            "datastore": "{{ user `vcenter_datastore` }}",
+
+            "vm_name": "{{ user `template_name` }}",
+            "cpus": 1,
+            "cpu_cores": 1,
+            "ram": 1024,
+            "storage": [
+                {
+                    "disk_size": 40960,
+                    "disk_thin_provisioned": true
+                }
+            ],
+            "network_adapters": [
+                {
+                    "network": "VM Network",
+                    "network_card": "vmxnet3"
+                }
+            ],
+            "vm_version": "14",
+            "guest_os_type": "centos7_64Guest",
+
+            "iso_url": "{{ user `iso_url` }}",
+            "iso_checksum": "{{ user `iso_checksum` }}",
+
+            "floppy_files": [
+                "vcenter/centos/7/kickstart/kickstart.cfg"
+            ],
+            "boot_command": [
+                "<tab> inst.text inst.ks=hd:fd0:/kickstart.cfg <enter><wait>"
+            ],
+
+            "ssh_username": "{{ user `username` }}",
+            "ssh_password": "{{ user `password` }}",
+
+            "convert_to_template": true,
+            "folder": "templates"
+        }
     ],
 
     "provisioners": [
-      {
-        "type": "file",
-        "source": "files/linux/authorized_keys",
-        "destination": "/home/packer/.ssh/authorized_keys"
-      },
-      {
-        "type": "shell",
-        "inline": [
-          "chmod 600 /home/packer/.ssh/authorized_keys"
-        ]
-      },
-      {
-        "type": "shell",
-        "execute_command": "sudo -E sh -x '{{.Path}}'",
-        "scripts": [
-          "scripts/linux/update-system.sh"
-        ]
-      }
+        {
+            "type": "file",
+            "source": "files/linux/authorized_keys",
+             "destination": "/home/packer/.ssh/authorized_keys"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "chmod 600 /home/packer/.ssh/authorized_keys"
+            ]
+        },
+        {
+            "type": "shell",
+            "execute_command": "sudo -E sh -x '{{.Path}}'",
+            "scripts": [
+                "scripts/linux/update-system.sh"
+            ]
+        }
     ]
 }

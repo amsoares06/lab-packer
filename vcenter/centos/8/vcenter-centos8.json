@@ -1,93 +1,98 @@
 {
     "variables": {
-        "version" : "1.0.4",
         "template_name": "packer-centos8",
         "username": "packer",
         "password": "packer",
         "vcenter_server": "",
         "vcenter_username": "",
-        "vcenter_password": "{{ env `PACKER_VSPHERE_PASSWORD` }}",
+        "vcenter_password": "",
+        "vcenter_insecure_connection": "",
+        "vcenter_datacenter": "",
+        "vcenter_cluster": "",
         "vcenter_datastore": "",
         "iso_url": "http://mirror.seedvps.com/CentOS/8.3.2011/isos/x86_64/CentOS-8.3.2011-x86_64-dvd1.iso",
         "iso_checksum": "sha256:aaf9d4b3071c16dbbda01dfe06085e5d0fdac76df323e3bbe87cce4318052247"
       },
 
     "builders": [
-      {
-        "type": "vsphere-iso",
-        "vcenter_server": "{{ user `vcenter_server` }}",
-        "username": "{{ user `vcenter_username` }}",
-        "password": "{{ user `vcenter_password` }}",
-        "insecure_connection": true,
-        "datacenter": "dc-home",
-        "http_directory": "vcenter/centos/8/kickstart",
-        "boot_wait": "20s",
-        "boot_command": [
-          "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/kickstart.cfg<enter>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>",
-          "<wait10><wait10><wait10>"
-        ],
-        "cpus": 1,
-        "cpu_cores": 1,
-        "ram": 2048,
-        "vm_name": "{{ user `template_name` }}-{{ user `version` }}",
-        "cluster": "cluster-home",
-        "datastore": "{{ user `vcenter_datastore` }}",
-        "shutdown_command": "sudo -S /usr/sbin/shutdown -h now",
-        "iso_url": "{{ user `iso_url` }}",
-        "iso_checksum": "{{ user `iso_checksum` }}",
-        "vm_version": "14",
-        "guest_os_type": "centos8_64Guest",
-        "storage": [
-          {
-            "disk_size": 40960,
-            "disk_thin_provisioned": true
-          }
-        ],
-        "network_adapters": [
-          {
-            "network": "VM Network",
-            "network_card": "vmxnet3"
-          }
-        ],
-        "communicator": "ssh",
-        "ssh_pty": true,
-        "ssh_username": "{{ user `username` }}",
-        "ssh_password": "{{ user `password` }}",
-        "ssh_wait_timeout": "60m",
-        "convert_to_template": true,
-        "folder": "templates"
-      }
+        {
+          "type": "vsphere-iso",
+          "name": "{{ user `template_name` }}",
+
+          "vcenter_server": "{{ user `vcenter_server` }}",
+          "username": "{{ user `vcenter_username` }}",
+          "password": "{{ user `vcenter_password` }}",
+          "insecure_connection": "{{ user `vcenter_insecure_connection` }}",
+          "datacenter": "{{ user `vcenter_datacenter` }}",
+          "cluster": "{{ user `vcenter_cluster` }}",
+          "datastore": "{{ user `vcenter_datastore` }}",
+
+          "vm_name": "{{ user `template_name` }}",
+          "cpus": 1,
+          "cpu_cores": 1,
+          "ram": 1024,
+          "storage": [
+              {
+                  "disk_size": 40960,
+                  "disk_thin_provisioned": true
+              }
+          ],
+          "network_adapters": [
+              {
+                  "network": "VM Network",
+                  "network_card": "vmxnet3"
+              }
+          ],
+          "vm_version": "14",
+          "guest_os_type": "centos8_64Guest",
+
+          "iso_url": "{{ user `iso_url` }}",
+          "iso_checksum": "{{ user `iso_checksum` }}",
+
+          "http_directory": "vcenter/centos/8/kickstart",
+          "boot_wait": "20s",
+          "boot_command": [
+              "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/kickstart.cfg<enter>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>",
+              "<wait10><wait10><wait10>"
+          ],
+
+          "ssh_username": "{{ user `username` }}",
+          "ssh_password": "{{ user `password` }}",
+
+          "convert_to_template": true,
+          "folder": "templates"
+        }
     ],
 
     "provisioners": [
-      {
-        "type": "file",
-        "source": "files/linux/authorized_keys",
-        "destination": "/home/packer/.ssh/authorized_keys"
-      },
-      {
-        "type": "shell",
-        "inline": [
-          "chmod 600 /home/packer/.ssh/authorized_keys"
-        ]
-      },
-      {
-        "type": "shell",
-        "execute_command": "sudo -E sh -x '{{.Path}}'",
-        "scripts": [
-          "scripts/linux/update-system.sh"
-        ]
-      }
+        {
+            "type": "file",
+            "source": "files/linux/authorized_keys",
+            "destination": "/home/packer/.ssh/authorized_keys"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "chmod 600 /home/packer/.ssh/authorized_keys"
+            ]
+        },
+        {
+            "type": "shell",
+            "execute_command": "sudo -E sh -x '{{.Path}}'",
+            "scripts": [
+                "scripts/linux/update-system.sh"
+            ]
+        }
     ]
 }
