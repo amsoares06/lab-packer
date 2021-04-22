@@ -1,3 +1,7 @@
+## 04/22/21
+- vcenter/ubuntu/20.04
+  - configured LVM
+
 ## 04/20/21
 - got rid of version numbers, they don´t make sense atm
 - vcenter/ubuntu/18.04

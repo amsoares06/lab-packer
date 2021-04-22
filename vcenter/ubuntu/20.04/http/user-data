@@ -1,4 +1,4 @@
-#cloud-config
+#cloud-config BKP
 autoinstall:
   version: 1
   locale: en_US
@@ -12,17 +12,92 @@ autoinstall:
         ens160:
           dhcp4: true
   storage:
-    layout:
-      name: lvm
+    version: 1
+    swap:
+      size: 0 # I want to create a LV for swap
+    config:
+      # /dev/sda
+      - id: disk-sda
+        type: disk
+        path: /dev/sda
+        ptable: gpt
+        grub_device: true
+      # /dev/sda1 - grub
+      - id: partition-grub
+        type: partition
+        device: disk-sda
+        number: 1
+        flag: bios_grub
+        size: 1048576 # 1MB
+        grub_device: false
+      # /boot - create partition
+      - id: partition-boot
+        type: partition
+        device: disk-sda
+        number: 2
+        size: 536870912 # 512M
+      # /boot - format partition
+      - id: format-boot
+        type: format
+        volume: partition-boot
+        fstype: ext4
+      # lvm - create partition
+      - id: partition-lvm
+        type: partition
+        device: disk-sda
+        number: 3
+        size: -1
+      # rootvg - create
+      - id: lvm_volgroup-rootvg
+        type: lvm_volgroup
+        name: rootvg
+        devices:
+          - partition-lvm
+      # swap - create LV
+      - id: lvm_partition-swap
+        type: lvm_partition
+        name: swap
+        volgroup: lvm_volgroup-rootvg
+        size: 4G
+      # / - create lv_root
+      - id: lvm_partition-root
+        type: lvm_partition
+        name: lv_root
+        volgroup: lvm_volgroup-rootvg
+        size: -1
+      # / - format lv_root
+      - id: format-root
+        type: format
+        volume: lvm_partition-root
+        fstype: ext4
+      # swap - format LV
+      - id: format-swap
+        type: format
+        volume: lvm_partition-swap
+        fstype: swap
+      # / - mount
+      - id: mount-root
+        type: mount
+        device: format-root
+        path: /
+      # /boot - mount
+      - id: mount-boot
+        type: mount
+        device: format-boot
+        path: /boot
+      # swap - mount
+      - id: mount-swap
+        type: mount
+        device: format-swap
+        path: ''
   identity:
-    hostname: localhost
+    hostname: packer-ubuntu
     username: packer
     password: $6$FhcddHFVZ7ABA4Gi$QybBjJXeTESb.NIDf7umP5rubBXM0N.SseGarXYz1kZpit8UgV6CVWo7ubIoacgdBEPUXTWXe92GyAVJ.jOJZ.
   ssh:
     install-server: yes
     allow-pw: yes
   user-data:
-    disable_root: false
-  late-commands:
-    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
-    - echo 'packer ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/packer
+    timezone: Europe/Amsterdam
+#  late-commands:
+#    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
