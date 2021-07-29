@@ -1,3 +1,6 @@
+## 07/29/21
+- vecenter/centos
+  - resized volumes
 ## 04/22/21
 - vcenter/ubuntu/20.04
   - configured LVM
