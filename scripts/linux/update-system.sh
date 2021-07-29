@@ -5,9 +5,9 @@ if cat /etc/os-release | grep -w ID | grep centos; then
     OS="centos"
     echo "[INFO] CentOS detected..."
     # Update all
-    yum update -y
+    yum update -y -q
     # Install software
-    yum install -y \
+    yum install -y -q \
         net-tools \
         wget
 
