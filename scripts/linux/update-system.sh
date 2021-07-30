@@ -15,8 +15,8 @@ elif cat /etc/os-release | grep -w ID | grep ubuntu; then
     OS="ubuntu"
     echo "[INFO] Ubuntu detected..."
     # Update all
-    apt-get update
-    apt-get upgrade -y
+    apt-get -q update
+    apt-get -q upgrade -y
     # Install software
     apt-get install net-tools
 
