@@ -33,7 +33,7 @@
             "ram": 1024,
             "storage": [
                 {
-                    "disk_size": 10240,
+                    "disk_size": 40960,
                     "disk_thin_provisioned": true
                 }
             ],
