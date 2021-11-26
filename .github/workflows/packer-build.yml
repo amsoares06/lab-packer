@@ -1,0 +1,34 @@
+---
+name: Packer Build
+
+on: [push]
+
+jobs:
+  Packer_AWS:
+    name: Packer Ubuntu 18.04 AWS Template
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # version
+      - name: Packer Version
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: version
+
+      # validate
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: validate
+          arguments: -syntax-only
+          target: aws/ubuntu/18.04/aws-ubuntu18.04.json
+
+      # build
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: build
+          arguments: "-timestamp-ui -force -var aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} -var aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          target: aws/ubuntu/18.04/aws-ubuntu18.04.json
