@@ -26,8 +26,8 @@ source "proxmox-iso" "packer-almalinux8" {
   scsi_controller = "virtio-scsi-pci"
 
   disks {
-    type              = "scsi"
-    disk_size         = "30G"
+    type      = "scsi"
+    disk_size = "30G"
     #storage_pool      = "local-lvm"
     storage_pool      = "hdd"
     storage_pool_type = "lvm-thin"
