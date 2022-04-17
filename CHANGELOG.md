@@ -1,5 +1,9 @@
+## 04/17/22
+- proxmox/almalinux/8
+  - added template
+
 ## 07/29/21
-- vecenter/centos
+- vcenter/centos
   - resized volumes
 ## 04/22/21
 - vcenter/ubuntu/20.04
