@@ -39,7 +39,6 @@ Create a json file with credentials. For AWS this is optional, you can skip this
 }
 ```
 
-
 ## How to use
 Run packer from the base folder of this repository.
 
@@ -61,6 +60,15 @@ Export vSphere password and call Packer:
 export PACKER_VSPHERE_PASSWORD="<PASSWORD>"
 packer validate -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
 packer build -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.json
+```
+
+## How to use templates in HCL
+Example:
+```
+packer init proxmox/almalinux/8
+packer validate proxmox/almalinux/8
+export PKR_VAR_password="<PASSWORD>"
+packer buil proxmox/almalinux/8
 ```
 
 ## Output

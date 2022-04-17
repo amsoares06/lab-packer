@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# Get OS type and update it
-if cat /etc/os-release | grep -w ID | grep centos; then
-    OS="centos"
-    echo "[INFO] CentOS detected..."
+# Get OS type
+OS=$(cat /etc/os-release | grep -w ID | cut -d'=' -f2 | tr -d '"')
+echo "[INFO] ${OS} detected..."
+
+# CentOS / AlmaLinux
+if [ ${OS} = "centos" ] || [ ${OS} = "almalinux" ]; then
     # Update all
     yum update -y -q
     # Install software
@@ -11,9 +13,8 @@ if cat /etc/os-release | grep -w ID | grep centos; then
         net-tools \
         wget
 
-elif cat /etc/os-release | grep -w ID | grep ubuntu; then
-    OS="ubuntu"
-    echo "[INFO] Ubuntu detected..."
+# Ubuntu
+elif [ ${OS} = "ubuntu" ]; then
     # Update all
     apt-get -q update
     apt-get -q upgrade -y
