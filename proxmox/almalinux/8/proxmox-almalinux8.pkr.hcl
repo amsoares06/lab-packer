@@ -55,7 +55,7 @@ source "proxmox-iso" "packer-almalinux8" {
   ]
   ssh_username           = "${var.ssh_username}"
   ssh_password           = "${var.ssh_password}"
-  ssh_timeout            = "20m"
+  ssh_timeout            = "30m"
   ssh_pty                = true
   ssh_handshake_attempts = 20
 
