@@ -1,3 +1,9 @@
+## 04/22/22
+- proxmox/almalinux/8
+  - reduced disk_size to 8G to make TF deployments faster
+  - enabled cloud-init
+  - removed default ssh_password value
+
 ## 04/17/22
 - proxmox/almalinux/8
   - added template
