@@ -12,7 +12,7 @@ source "proxmox-iso" "packer-almalinux8" {
   proxmox_url              = "${var.proxmox_url}"
   username                 = "${var.username}"
   password                 = "${var.password}"
-  node                     = "proxmox01"
+  node                     = "${var.node}"
   insecure_skip_tls_verify = true
 
   # VM settings
