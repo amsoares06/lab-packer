@@ -68,7 +68,7 @@ Example:
 packer init proxmox/almalinux/8
 packer validate proxmox/almalinux/8
 export PKR_VAR_password="<PASSWORD>"
-packer buil proxmox/almalinux/8
+packer build proxmox/almalinux/8
 ```
 
 ## Output
