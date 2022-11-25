@@ -43,7 +43,7 @@ source "proxmox-iso" "packer-almalinux8" {
   # ISO settings
   # iso_url      = "http://nl.mirrors.clouvider.net/almalinux/8.5/isos/x86_64/AlmaLinux-8.5-x86_64-dvd.iso"
   # iso_checksum = "sha256:54b8881bebd924e4699ed12634187a82156fdb0fa57ec24058d04d70d2f033b3"
-  iso_file         = "local:iso/AlmaLinux-8.5-x86_64-dvd.iso"
+  iso_file         = "local:iso/AlmaLinux-8.7-x86_64-dvd.iso"
   iso_storage_pool = "local"
   unmount_iso      = true
 
