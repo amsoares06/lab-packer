@@ -1,3 +1,10 @@
+## 11/25/22
+- refactored system update script
+- proxmox/almalinux/8
+  - updated to 8.7
+- proxmox/almalinux/9
+  - added template
+
 ## 04/22/22
 - proxmox/almalinux/8
   - reduced disk_size to 8G to make TF deployments faster
