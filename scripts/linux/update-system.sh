@@ -10,8 +10,8 @@ case ${OS} in
     yum update -y -q
     # Install software
     yum install -y -q \
-    net-tools \
-    wget
+      net-tools \
+      wget
     ;;
 
   "almalinux")
