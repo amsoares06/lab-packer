@@ -4,24 +4,35 @@
 OS=$(cat /etc/os-release | grep -w ID | cut -d'=' -f2 | tr -d '"')
 echo "[INFO] ${OS} detected..."
 
-# CentOS / AlmaLinux
-if [ ${OS} = "centos" ] || [ ${OS} = "almalinux" ]; then
+case ${OS} in
+  "centos")
     # Update all
     yum update -y -q
     # Install software
     yum install -y -q \
-        net-tools \
-        wget
+    net-tools \
+    wget
+    ;;
 
-# Ubuntu
-elif [ ${OS} = "ubuntu" ]; then
+  "almalinux")
+    # Update all
+    dnf update -y -q
+    # Install software
+    dnf install -y -q \
+      net-tools \
+      wget
+    ;;
+
+  "ubuntu")
     # Update all
     apt-get -q update
     apt-get -q upgrade -y
     # Install software
     apt-get install net-tools
+    ;;
 
-else
+  *)
     echo "[ERROR] OS not supported..."
     exit 1
-fi
+    ;;
+esac
