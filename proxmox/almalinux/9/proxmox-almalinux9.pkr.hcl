@@ -83,6 +83,7 @@ build {
       "chmod 600 /home/packer/.ssh/authorized_keys"
     ]
   }
+
   provisioner "shell" {
     execute_command = "sudo -E sh -x '{{.Path}}'"
     scripts = [
