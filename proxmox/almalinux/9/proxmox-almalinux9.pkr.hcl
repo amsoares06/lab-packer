@@ -72,6 +72,14 @@ source "proxmox-iso" "packer-almalinux9" {
 build {
   sources = ["source.proxmox-iso.packer-almalinux9"]
 
+  # Workarround because most of the times qemu-guest-agent is not starting for no reason
+  provisioner "shell" {
+    execute_command = "sudo -E sh -x '{{.Path}}'"
+    inline = [
+      "(crontab -l 2>/dev/null; echo '@reboot systemctl start qemu-guest-agent') | crontab -"
+    ]
+  }
+
   provisioner "file" {
     source      = "files/linux/authorized_keys"
     destination = "/home/packer/.ssh/authorized_keys"
