@@ -65,10 +65,10 @@ packer build -var-file=vars/vcenter-vars.json vcenter/centos/7/vcenter-centos7.j
 ## How to use templates in HCL
 Example:
 ```
-packer init proxmox/almalinux/8
-packer validate proxmox/almalinux/8
+packer init proxmox/almalinux/9
+packer validate proxmox/almalinux/9
 export PKR_VAR_password="<PASSWORD>"
-packer build proxmox/almalinux/8
+packer build proxmox/almalinux/9
 ```
 
 ## Output
